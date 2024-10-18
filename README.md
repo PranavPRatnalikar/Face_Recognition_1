@@ -1,12 +1,11 @@
----
-title: Face Recognition
-emoji: 📈
-colorFrom: green
-colorTo: indigo
-sdk: streamlit
-sdk_version: 1.38.0
-app_file: app.py
-pinned: false
----
+#Create Virtual Enviornment: 
+python -m venv venv
 
-Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
+#start venv
+venv/scripts/activate
+
+#install dependencies
+pip install -r requirements.txt
+
+#run streamlit
+streamlit run app.py
