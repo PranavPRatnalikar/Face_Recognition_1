@@ -11,13 +11,13 @@ import random
 
 # Firebase setup (initialize using your Firebase credentials)
 current_directory = os.path.dirname(os.path.abspath(__file__))
-firebase_cred_path = os.path.join(current_directory, "espiotproject1-firebase-adminsdk-856yr-1b9ae0c516.json")
+firebase_cred_path = os.path.join(current_directory, "galaxy-unhilater-firebase-adminsdk-6diyp-336a1a0777.json")
 
 # Check if Firebase is already initialized
 if not firebase_admin._apps:
     cred = credentials.Certificate(firebase_cred_path)
     firebase_admin.initialize_app(cred, {
-        'databaseURL': 'https://espiotproject1-default-rtdb.firebaseio.com'
+        'databaseURL': 'https://galaxy-unhilater-default-rtdb.firebaseio.com'
     })
 
 # Reference to the root of your Firebase Realtime Database
@@ -104,6 +104,7 @@ def add_person(name, image_file):
     else:
         st.error("No face detected in the image.")
 
+
 # Recognize person from image
 def recognize_face(image_file):
     unknown_encodings = load_and_encode(image_file)
@@ -114,14 +115,17 @@ def recognize_face(image_file):
     matches = set()  # Use a set to store unique names
     for unknown_encoding in unknown_encodings:
         for name, data in ref.get().items():
-            known_encoding = np.array(data['encoding'])
-            if face_recognition.compare_faces([known_encoding], unknown_encoding)[0]:
-                matches.add(name)  # Add the matched name to the set
+            if 'encoding' in data:  # Check if 'encoding' key exists
+                known_encoding = np.array(data['encoding'])
+                if face_recognition.compare_faces([known_encoding], unknown_encoding)[0]:
+                    matches.add(name)  # Add the matched name to the set
 
     if matches:
         st.success(f"Matched with: {', '.join(matches)}")
     else:
         st.error("No matches found.")
+
+
 
 # Streamlit UI
 st.title("Face Recognition App")
